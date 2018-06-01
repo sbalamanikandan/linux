@@ -1,0 +1,706 @@
+1.The following package are Importent dependancy for other Package of Software
+
+                      yum install gcc
+                     yum install gcc-c++
+                   yum install glib2-devel 
+                    yum install gtk+-devel 
+                    yum install gtk2-devel 
+                   yum install GConf2-devel
+
+---------------------------------------------------------------------------------
+
+2.In this command used to showe verification image while uing website 
+
+                  "yum install php-gd"
+
+--------------------------------------------------------------------------------------
+
+3. To open the "."tar or "Zip" folder 
+
+"yum install file-roller"
+
+----------------------------------------------------------------------------------------
+
+4.On Desktop when you will "right click" show "Open the Terminal" in that dialogbox  
+
+             yum install nautilus-open-terminal
+
+-----------------------------------------------------------------------------------------
+
+5.If not working "ifconfig" you wil Install "Nettools" 
+
+                 yum install net-tools
+
+----------------------------------------------------------------------------------------------
+
+6.CentOS level 
+
+Default Leval 5
+
+-------------------------------------------------------------------------------------
+
+7.Difference Between "update" & "upgrade 
+ 
+update ->only update the system software 
+
+upgrade ->it's update the OS/Kernal with system package also 
+
+-------------------------------------------------------------------------------------------
+
+8.You will manually Disable the Firewall(like Windows) Selinux(like CentOS)
+
+               Command: vim /etc/selinux/config
+ 
+Through Terminal configuration  
+            command: [root~]#getenforce 1-disabled 
+
+------------------------------------------------------------------------------------
+
+9.If you have any problem while install any Development package and it's package needed to another package  
+
+           "yum groupinstall Development Tools"
+
+simillarly,Desktop Package:      
+       
+            "yum groupinstall Desktop"
+
+-------------------------------------------------------------------------------------------
+10.you can change upload file size for Two places
+
+For Squid
+
+     vim /etc/squid/squid.conf => places => :/request_body
+   
+For PhP
+
+    In ubuntu /etc/php5/apache2/php.ini => change the places => upload
+
+    In Centos /etc/php.ini => places
+
+#LINE:729 : post_max_size = 8M and 
+#LINE:878 : upload_max_filesize = 2M
+
+For Mail 
+
+  roundcube=>Config=>.htaccess =>see changes 
+
+#LINE:9 php_value   upload_max_filesize   5M
+
+Optional 
+((php_value   post_max_size         6M
+php_value   memory_limit          64M))
+
+----------------------------------------------------------------------------------------------------------
+
+11.when create virtuvalhost you will need to configure the http and https config files
+
+you should mannually add config lines each respective configuration files like http&https
+
+In Ubuntu ==> For "http" config commend --># gedit /etc/apache2/sites-enabled/default.conf
+In CentOS ==> For "http" config commend --># vim /etc/httpd/conf/httpd.confd
+Add the lines fllowing:
+
+NameVirtualHost *:80
+
+         <VirtualHost *:80>
+ 	 DocumentRoot /var/www/cloudrexx_live
+	 ServerName www.cloudrexx.local
+   	 ServerAlias *.cloudrexx.local
+	 <Directory "/var/www/cloudrexx_live">
+ 	 AllowOverride All
+	 Allow from all
+ 	 </Directory>
+	 </VirtualHost>
+
+In ubuntu For "https" config commend -->#gedit /etc/apache2/sites-enabled/defaultssl.conf 
+In CentOS for "https" config commend -->#vim /etc/httpd/conf/httpd.conf
+
+Add the lines fllowing:
+
+NameVirtualHost *:443
+
+<VirtualHost *:443>
+  DocumentRoot /var/www/html/test
+  ServerName www.test.local
+  ServerAlias *.local
+  SSLEngine on
+  SSLCertificateFile /etc/pki/tls/certs/localhost.crt
+  SSLCertificateKeyFile /etc/pki/tls/private/localhost.key
+  <Directory "/var/www/html/test">
+  AllowOverride All
+  Allow from all   
+  </Directory>
+</VirtualHost>
+
+In centOS 
+      http problems like -->port overloop ,
+              To solve add/uncomment the Namevirtuvalhost *:80 
+      https problems like -->sslEngine , certificate key       
+              To solve sslEmgine -Install dependancy like modesll ,openssl
+              To solve Certificate -Install   
+In UbuntuOS 
+     http problems like -->same port overloop -->same solution
+     https problems like -->sslengine ,certificate
+
+----------------------------------------------------------------------------------------------------
+
+12.How to  Import/Export mySQL Files thougth Terminal
+
+you should prasent mysql shell 
+  
+Create Database: creare datebase databasename;
+
+Exit mqsql shell 
+
+Import commend:
+
+      mysql -u [username] -p newdatabase < [database name].sql
+ 
+ Export commend:
+
+      mysqldump -u [username] -p [database name] > [database name].sql
+
+ In export Process inside of mqsql shell
+
+ create database : create database databasename;
+
+ Use database    : use databasename;
+
+ Export data     : source path of data(like /root/Desktop/dataname.sql)
+
+ If you use the existing database first show database 
+
+   Commend :show databases;
+
+   use database
+
+   Export Data
+
+-----------------------------------------------------------------------------------------------
+
+13.If you want update any package 
+
+    To download the that particular Package Repository file(Website like:".lanuchpad.net") 
+
+    Added the source list --> Commend: gedit /etc/apt/source.list
+
+    Update the apt--> commend: apt-get update
+
+    Install that package--> Commend: apt-get install package Name
+
+----------------------------------------------------------------------------------------------------------------------------
+
+14.While updating the sytem shutdown or Restart
+
+  you can ue this commend : to resolve the problem 
+   Commend : dpkg --configure -a
+                OR
+   Commend : sudo dpkg --comfigure -a
+
+----------------------------------------------------------------------------------------------------------------------------
+
+15.how to install and configure phpmyadmin on ubuntu
+
+
+Install phpMyAdmin
+-------------------
+
+#apt-get install phpmyadmin apache2-utils
+
+ it will ask user-root and passwd-123456
+
+
+phpmyadmin to the apache configuration
+---------------------------------------
+
+Add the following phpmyadmin config to the file
+
+"Include /etc/phpmyadmin/apache.conf"
+
+Restart apache: service apache2 restart
+
+
+Set Up the .htaccess File
+-------------------------
+
+#gedit /etc/phpmyadmin/apache.conf
+
+ add the line “AllowOverride All” under “Directory Index”
+
+ look like follwing :
+
+<Directory /usr/share/phpmyadmin>
+        Options FollowSymLinks
+        DirectoryIndex index.php
+        AllowOverride All
+        [...]
+
+
+Configure the .htaccess file
+----------------------------
+
+#gedit /usr/share/phpmyadmin/.htaccess
+
+Copy and paste following lines:
+
+AuthType Basic
+AuthName "Restricted Files"
+AuthUserFile /etc/apache2/.phpmyadmin.htpasswd
+Require valid-user
+
+Create the htpasswd file
+------------------------
+
+#htpasswd -c /etc/apache2/.phpmyadmin.htpasswd username
+
+A prompt will ask you to provide and confirm your password
+
+Restart apache :
+ #service apache2 restart
+
+----------------------------------------------------------------------------------------------------------------------------
+16) If you wnt install phpmyadmin for CentOS 
+
+First you will add repository: 
+    
+    rpm -iUvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-      release-6-8.noarch.rpm 
+
+Second
+ 
+  yum -y update
+ 
+Third 
+
+  yum install phpmyadmin
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+17)HOW TO INTALL ROUNDCUBE MAIL 
+
+ ## yum update
+
+First Create a Database roundcubr mail :
+
+## mysql -u root -p
+mysql> CREATE DATABASE IF NOT EXISTS `roundcube`;
+mysql> GRANT ALL PRIVILEGES ON `roundcube` . * TO 'roundcube'@'localhost' IDENTIFIED BY 'mySecretPassword';
+mysql> FLUSH PRIVILEGES;
+mysql> quit
+
+In Mysecretpassword ur own choose 
+
+create Roundcube’s Apache configuration file
+
+#vim /etc/httpd/conf.d/90-roundcube.conf
+
+and paste following lines:
+
+Alias /webmail /var/www/html/roundcube
+
+<Directory /var/www/html/roundcube>
+    Options -Indexes
+    AllowOverride All
+</Directory>
+
+<Directory /var/www/html/roundcube/config>
+    Order Deny,Allow
+    Deny from All
+</Directory>
+
+<Directory /var/www/html/roundcube/temp>
+    Order Deny,Allow
+    Deny from All
+</Directory>
+
+<Directory /var/www/html/roundcube/logs>
+    Order Deny,Allow
+    Deny from All
+</Directory>
+
+Now, download and set-up the latest version of Roundcube to /var/www/html/roundcube
+
+Mannually u download and configure
+              OR 
+Following this Comment :
+
+## curl -L "http://sourceforge.net/projects/roundcubemail/files/latest/download?source=files" > /tmp/roundcube-latest.tar.gz
+## tar -zxf /tmp/roundcube-latest.tar.gz -C /var/www/html
+## rm -f /tmp/roundcube-latest.tar.gz
+## cd /var/www/html
+## mv roundcubemail-* roundcube
+## chown root: -R roundcube/
+## chown apache: -R roundcube/temp/
+## chown apache: -R roundcube/logs/
+
+Next thing to do, is to set-up Roundcube’s "config.inc.php" configuration file. But, before setting it up, let’s first create all the necessary database tables for Roundcube using:
+
+## mysql -u roundcube -p"mySecretPassword" roundcube < /var/www/html/roundcube/SQL/mysql.initial.sql
+
+
+now 
+
+## vim /var/www/html/roundcube/config/config.inc.php
+
+change:
+  $rcmail_config['default_host'] = '';
+to
+  $rcmail_config['default_host'] = 'localhost';
+
+change:
+  $rcmail_config['smtp_server'] = '';
+to
+  $rcmail_config['smtp_server'] = 'localhost';
+
+change:
+  $rcmail_config['smtp_user'] = '';
+to
+  $rcmail_config['smtp_user'] = '%u';
+
+change:
+  $rcmail_config['smtp_pass'] = '';
+to
+  $rcmail_config['smtp_pass'] = '%p';
+
+change:
+  $rcmail_config['quota_zero_as_unlimited'] = false;
+to
+  $rcmail_config['quota_zero_as_unlimited'] = true;
+
+change:
+  $rcmail_config['preview_pane'] = false;
+to
+  $rcmail_config['preview_pane'] = true;
+
+change:
+  $rcmail_config['read_when_deleted'] = true;
+to
+  $rcmail_config['read_when_deleted'] = false;
+
+change:
+  $rcmail_config['check_all_folders'] = false;
+to
+  $rcmail_config['check_all_folders'] = true;
+
+Username and password configure same file 
+
+change:
+  $rcmail_config['db_dsnw'] = 'mysql://roundcube:pass@localhost/roundcubemail';
+to
+  $rcmail_config['db_dsnw'] = 'mysqli://roundcube:mySecretPassword@localhost/roundcube';
+
+Now Remove Installer folder 
+
+## rm -rf /var/www/html/roundcube/installer
+
+Restart:
+
+## service httpd restart
+
+login to your webmail http://localhost(here ur Domain name )/webmail
+ 
+----------------------------------------------------------------------------------------------------------------------------
+18)HOW TO INSTALL AND CONFIGURE THE POSTFIX & DOCEVOT
+
+                      Installation of POSTFIX:
+                     --------------------------
+
+=>Set the domain name :
+
+       # vi /etc/hosts
+
+    add your ipaddress and respective Domain name 
+
+        192.168.2.238 localhost@localdomain
+
+=>Diabled Selinux
+
+=>Install postfix 
+------------------
+
+   #yum -y install postfix 
+OR 
+
+    # yum -y install cyrus-sasl cyrus-sasl-devel cyrus-sasl-gssapi cyrus-sasl-md5 cyrus-sasl-plain
+ Indtallation completed.
+
+=>creating SSL 
+---------------
+
+[root@mail ~]# mkdir /etc/postfix/ssl
+[root@mail ~]# cd /etc/postfix/ssl/
+[root@mail ssl]# openssl genrsa -des3 -rand /etc/hosts -out smtpd.key 1024
+[root@mail ssl]# chmod 600 smtpd.key
+[root@mail ssl]# openssl req -new -key smtpd.key -out smtpd.csr
+[root@mail ssl]# openssl x509 -req -days 365 -in smtpd.csr -signkey smtpd.key -out smtpd.crt
+[root@mail ssl]# openssl rsa -in smtpd.key -out smtpd.key.unencrypted
+[root@mail ssl]# mv -f smtpd.key.unencrypted smtpd.key
+[root@mail ssl]# openssl req -new -x509 -extensions v3_ca -keyout cakey.pem -out cacert.pem -days 365
+
+=>Configure podtfix 
+--------------------
+
+   #vim /etc/podtfix/main.cf
+
+Edit the following lines :
+
+-------------------------------
+----------------------------------
+## Line no 75 - Uncomment and set your mail server FQDN ##
+myhostname = server.unixmen.local
+## Line 83 - Uncomment and Set domain name ##
+mydomain = unixmen.local
+## Line 99 - Uncomment ##
+myorigin = $mydomain
+## Line 116 - Set ipv4 ##
+inet_interfaces = all
+## Line 119 - Change to all ##
+inet_protocols = all
+## Line 164 - Comment ##
+#mydestination = $myhostname, localhost.$mydomain, localhost,
+## Line 165 - Uncomment ##\
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+## Line 264 - Uncomment and add IP range ##
+mynetworks = 192.168.1.0/24, 127.0.0.0/8
+## Line 419 - Uncomment ##
+home_mailbox = Maildir/
+
+-----------------------------
+-----------------------------
+
+myhostname = mail.krizna.com
+mydomain = krizna.com
+myorigin = $mydomain
+home_mailbox = mail/
+mynetworks = 127.0.0.0/8
+inet_interfaces = all
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_type = cyrus
+smtpd_sasl_security_options = noanonymous
+broken_sasl_auth_clients = yes
+smtpd_sasl_authenticated_header = yes
+smtpd_recipient_restrictions = permit_sasl_authenticated,permit_mynetworks,reject_unauth_destination
+smtpd_tls_auth_only = no
+smtp_use_tls = yes
+smtpd_use_tls = yes
+smtp_tls_note_starttls_offer = yes
+smtpd_tls_key_file = /etc/postfix/ssl/smtpd.key
+smtpd_tls_cert_file = /etc/postfix/ssl/smtpd.crt
+smtpd_tls_CAfile = /etc/postfix/ssl/cacert.pem
+smtpd_tls_received_header = yes
+smtpd_tls_session_cache_timeout = 3600s
+tls_random_source = dev:/dev/urandom
+
+----------------------------------------
+----------------------------------------
+Next 
+
+ 
+---------
+
+#service postfix start
+
+# service saslauthd start
+
+#service postfix restart
+
+=> startup configure
+---------------------
+
+# chkconfig --level 235 postfix on
+
+# chkconfig --level 235 saslauthd on
+
+=>Testing postfix 
+-----------------
+
+telnet localhost smtp OR port number 
+
+Trying ::1...
+Connected to localhost.
+Escape character is '^]'.
+220 server.unixmen.local ESMTP Postfix
+ehlo localhost     ## type this command ##
+250-server.unixmen.local
+250-PIPELINING
+250-SIZE 10240000
+250-VRFY
+250-ETRN
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250 DSN
+mail from:<sk>     ## Type this - mail sender address##
+250 2.1.0 Ok
+rcpt to:<sk>     ## Type this - mail receiver address ##
+250 2.1.5 Ok
+data     ## Type this to input email message ##
+354 End data with <CR><LF>.<CR><LF>
+welcome to unixmen mail server     ## Enter the boddy of the email ##.
+     ## type dot (.) to complete message ##
+250 2.0.0 Ok: queued as B822221522
+quit     ## type this to quit from mail ##
+221 2.0.0 Bye
+Connection closed by foreign host.
+
+                             INSTALLATIONS OF DOVECOT
+                            --------------------------
+
+#yum -y install dovecot
+
+=>configure dovecot 
+-------------------
+
+#vim /etc/dovecot/dovecot.conf
+
+Make a changes:
+
+   protocols =imap pop3
+   mail_location=maildir:~/mail (mail loction for ur chooe )
+   pop3_uidl-format=%08Xu%08Xv
+
+#vim /etc/dovecot/conf.d/10-mail.conf
+
+##line 24 - uncomment ##
+    mail_location = maildir:~/maildir 
+
+#vim /etc/docevot/conf.d/10-auth.conf
+
+ ## line 9 - uncomment ##
+   disable_plaintext-auth = yes
+## line 97 -add a letter "login" ## 
+   auth_mechanisms = path login
+
+#vim /etc/dovecot/conf.d/10-master.conf
+
+## line 83,84 - uncomment and add "podtfix"
+  #mod = 0600
+  user =postfix
+  group=postfix 
+
+=>start dovecot
+----------------
+ 
+ #service dovecot start
+
+=>startup configure 
+-------------------
+
+#chkconfig --level 235 docevot on 
+
+ Run this comment also :
+
+postmap /etc/postfix/virtual
+
+----------------------------------------------------------------------------------------------------------------------------
+
+How to update FireFox through Terminal
+--------------------------------------- 
+
+  $ sudo add-apt-repository ppa:ubuntu-mozilla-security/ppa
+              (or)
+  $ sudo add-apt-repository ppa:mozillateam/firefox-next
+
+  $ sudo apt-get update
+  $ sudo apt-get install firefox
+
+admin guided 
+
+ #sudo apt-get update 
+ #sudo apt-get intall firefox
+
+How to update Firefox in Ubuntu [ Daily updates ]
+
+$ sudo add-apt-repository ppa:ubuntu-mozilla-daily/ppa
+$ sudo apt-get update
+$ sudo apt-get install firefox
+   
+-----------------
+-----------------
+How to update google chrome
+ 
+   Download the updateded Package 
+   TO open the package Ubuntu Software Center 
+   Install the google chrome 
+
+(NOTE: Before you Update the latest version of Package U shoud see Previouse Version Of that Package )
+-----------------------------------------------------------------------------------------------------------------------
+ECLIPSE Link : how to install 
+
+http://www.krizna.com/ubuntu/install-eclipse-in-ubuntu-12-04/
+
+------------------------------------------------------------------------------------------------------------------------
+Basic Thinks Of LInux LINK (admin guide)
+
+http://ark-library.blogspot.in/2015/08/index-of-redhat-certified-professional.html
+
+For me
+ 
+http://computernetworkingnotes.com/
+
+http://www.krizna.com/
+
+https://www.howtoforge.com/
+--------------------------------------------------------------------------------------------------------------------------
+
+Plugins Problem for Firefox
+          How to Add plugins Both Browser
+
+LINKS:https://support.mozilla.org/en-US/kb/install-flash-plugin-view-videos-animations-games
+
+--------------------------------------------------------------------------------------------------------------------------
+Eclipse "LOG" problem SWT "LIB"
+
+LINK : http://stackoverflow.com/questions/10165693/eclipse-cannot-load-swt-libraries
+
+------------------------------------------------------------------------------
+why system hanging problem
+
+LINK 1:(WINDOWS): http://www.techulator.com/experts/135-How-solve-problem-my-computer-system-hanging-up-now-then.aspx
+
+STEPS FOR WINDOWS:
+
+1) You have to check first your processor fan is working properly of not?
+2) Go to Start -> Run -> then type %temp% (delete all temp files) that are increase your system speed.
+3) Go to My Computer -> select all the hard disk drives i.e.(Local Disk C:,D:,E: etc) -> right click & select properties and cleanup all drives that are remove unwanted program.
+4) Go to Start -> Run -> then type msconfig then click OK. It open system configuration. These go to services and start up. Then deselect the programme you don't want to run aromatically when system is start.
+Note :- all changes will done in Administrator account.
+5) Go to windows folder then open system32 folder look inside the name of folder is "prefetch" delete it. If you can't find the inside of system32 folder come back one step means go to windows there you will be find & delete that folder.
+6) some critical problems occur from internet temp file therefore you have to clean history. 
+
+STEPS FOR UBUNTU 
+
+TO Remove LOG Files 
+ CMD : cd /var/log/ -Go to the log location
+ CMD : ls -show the log error files
+ CMD : rm -rf log file name 
+             (OR)
+TO kill all runing programs
+ Press Alt+F2 => type xkill => Enter 
+             (OR)
+Press Alt+F2 => type gnome-terminal => Enter 
+Ask Username and passwd 
+To reboot the system 
+CMD: service lightdm restart
+             (OR)
+Use following commend to restart hole system 
+CMD: Alt+PrtSc+REISUB
+R: Switch to XLATE mode 
+E: Send Terminate signal to all processes except for init 
+I: Send Kill signal to all processes except for init 
+S: Sync all mounted file-systems 
+U: Remount file-systems as read-only 
+B: Reboot
+
+-------------------------------------------------------------------------------------------------------------------------
+How to know RAM Type 
+
+CMD: sudo dmicode -t memory 
+
+how to check my sysytem CPU info and speed 
+ 
+CMD:cat /proc/cpuinfo
+-------------------------------------------------------------------------------------------------------------------------
+
+Setting default Java Commend 
+
+sudo update-alternatives --config java
