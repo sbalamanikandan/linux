@@ -1,0 +1,11 @@
+http://www.krizna.com/centos/setup-mail-server-in-centos-6/
+
+http://www.unixmen.com/install-postfix-mail-server-with-dovecot-and-squirrelmail-on-centos-6-4/
+
+https://www.rosehosting.com/blog/install-and-set-up-roundcube-webmail-interface/
+
+
+------
+postmap /etc/postfix/virtual
+
+----------
